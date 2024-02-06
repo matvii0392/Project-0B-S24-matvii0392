@@ -109,8 +109,8 @@ int isFile(const char *path) {
 int main(int argc, char *argv[]) {
     char *positions[100];
     FILE *filePointer;
-    DIR *dir;
-    struct dirent *entry;
+    //DIR *dir;
+    //struct dirent *entry;
     char cwd[1024];
     int filledPositions = 0;
 
