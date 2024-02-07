@@ -32,7 +32,12 @@ void copyFile(const char *source, const char *destination) {
     // Open the source file in binary read mode
     sourceFile = fopen(source, "rb");
     if (sourceFile == NULL) {
-        printf("Error: Unable to open source file %s\n", source);
+        printf("Error: Unable to open source file %s, file in directory created instead.\n", source);
+        char dest1[1024];
+        snprintf(dest1, sizeof(dest1), "%s/%s", destination, source);
+        // Open the destination file in binary write mode
+        destinationFile = fopen(dest1, "wb");
+        fclose(destinationFile);
         return;
     }
     // Open the destination file in binary write mode
@@ -60,7 +65,12 @@ void cpFileToDirectory(const char *source, const char *destination) {
     // Open the source file in binary read mode
     sourceFile = fopen(source, "rb");
     if (sourceFile == NULL) {
-        printf("Error: Unable to open source file %s\n", source);
+        printf("Error: Unable to open source file %s, file in directory created instead.\n", source);
+        char dest1[1024];
+        snprintf(dest1, sizeof(dest1), "%s/%s", destination, source);
+        // Open the destination file in binary write mode
+        destinationFile = fopen(dest1, "wb");
+        fclose(destinationFile);
         return;
     }
     // Create the destination path
@@ -140,8 +150,8 @@ int main(int argc, char *argv[]) {
                 fclose(filePointer);
             }
         }
-    } else if (filledPositions > 3){
-        for (size_t q = 1; q < filledPositions-1; q++){
+    } else if (filledPositions > 3) {
+        for (size_t q = 1; q < filledPositions - 1; q++) {
             const char *source = positions[q];
             const char *destination = positions[filledPositions - 1];
             char str1[1024] = "/";
@@ -150,6 +160,6 @@ int main(int argc, char *argv[]) {
                 cpFileToDirectory(source, destination);
             }
         }
+        return 0;
     }
-    return 0;
 }
