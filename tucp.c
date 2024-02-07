@@ -9,6 +9,10 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #define EMPTY NULL
 
 
@@ -63,7 +67,7 @@ void cpFileToDirectory(const char *source, const char *destination) {
         return;
     }
     // Create the destination path
-    char dest[256];
+    char dest[1024];
     snprintf(dest, sizeof(dest), "%s/%s", destination, source);
     // Open the destination file in binary write mode
     destinationFile = fopen(dest, "wb");
@@ -137,12 +141,15 @@ int main(int argc, char *argv[]) {
             cpFileToDirectory(source, destination);
         }
     } else if (filledPositions > 3){
-        for (size_t q = 1; q < filledPositions; q++){
+        printf("%d\n", filledPositions);
+        for (size_t q = 1; q < filledPositions-1; q++){
             const char *source = positions[q];
             const char *destination = positions[filledPositions - 1];
             char str1[1024] = "/";
             strcat(str1, positions[filledPositions - 1]);
-            if (isDirectory(strcat(cwd, str1))) {
+            printf("%s %s\n", cwd, str1);
+            if (1) {  //this was unnecessary
+                //printf("5 %s %s\n", source, destination);
                 cpFileToDirectory(source, destination);
             }
         }
