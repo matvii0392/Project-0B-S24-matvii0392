@@ -9,11 +9,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <stdbool.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#define EMPTY NULL
+
 
 
 //function to check whether file already exists
@@ -25,6 +21,7 @@ bool fileExists(const char *filename) {
     }
     return false;
 }
+
 
 //function to copy contents of one file to another
 void copyFile(const char *source, const char *destination) {
@@ -109,7 +106,7 @@ int main(int argc, char *argv[]) {
     int filledPositions = 0;
 
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        printf("***Current directory: %s\n", cwd);
+        //printf("***Current directory: %s\n", cwd);
     } else {
         perror("getcwd() ERROR");
         return 1;
@@ -127,29 +124,29 @@ int main(int argc, char *argv[]) {
         strcat(str1, positions[filledPositions - 1]);
         if (isFile(strcat(cwd, str1))) {
             if (fileExists(destination)) {
+                //printf("Copying file %s\n", destination);
                 copyFile(source, destination);
-            } else {
-                filePointer = fopen(destination, "w");
-                if (filePointer == NULL) {
-                } else {
-                    fclose(filePointer);
-                    copyFile(source, destination);
-                }
             }
         }
         if (isDirectory(strcat(cwd, str1))) {
             cpFileToDirectory(source, destination);
+        } else {
+            filePointer = fopen(destination, "w");
+            if (filePointer == NULL) {
+                printf("Error: Failed to create the file.\n");
+            } else {
+                copyFile(source, destination);
+                // Close the file after creating it
+                fclose(filePointer);
+            }
         }
     } else if (filledPositions > 3){
-        printf("%d\n", filledPositions);
         for (size_t q = 1; q < filledPositions-1; q++){
             const char *source = positions[q];
             const char *destination = positions[filledPositions - 1];
             char str1[1024] = "/";
             strcat(str1, positions[filledPositions - 1]);
-            printf("%s %s\n", cwd, str1);
-            if (1) {  //this was unnecessary
-                //printf("5 %s %s\n", source, destination);
+            if (1) {
                 cpFileToDirectory(source, destination);
             }
         }
